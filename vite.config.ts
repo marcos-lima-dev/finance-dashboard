@@ -8,13 +8,9 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "./src"),
             "@components": path.resolve(__dirname, "./src/components"),
-            "@layouts": path.resolve(__dirname, "./src/layouts"),
             "@pages": path.resolve(__dirname, "./src/pages"),
             "@utils": path.resolve(__dirname, "./src/utils"),
+            "@types": path.resolve(__dirname, "./src/types"),
         },
-    },
-    server: {
-        port: 3000,
-        open: true,
     },
 });

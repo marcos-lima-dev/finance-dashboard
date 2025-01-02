@@ -1,72 +1,73 @@
 // src/pages/Dashboard.tsx
 import React, { useState } from "react";
-import Layout from "../components/layout/Layout";
-import DashboardGrid from "../components/dashboard/DashboardGrid";
-import PeriodSelector from "../components/dashboard/PeriodSelector";
-import { Upload, RefreshCw } from "lucide-react";
+import SummaryCards from "@/components/dashboard/SummaryCards";
+import FinancialChart from "@/components/charts/FinancialChart";
+import CategoryChart from "@/components/charts/CategoryChart";
+import CSVUpload from "@/components/upload/CSVUpload";
+import { ProcessedFinancialData } from "@/types/financial";
 
-const Dashboard: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [selectedPeriod, setSelectedPeriod] = useState<
-        "day" | "week" | "month" | "year"
-    >("week");
+const Dashboard = () => {
+    const [dashboardData, setDashboardData] =
+        useState<ProcessedFinancialData | null>(null);
 
-    const handleRefresh = () => {
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 1500);
+    const handleDataProcessed = (data: ProcessedFinancialData) => {
+        setDashboardData(data);
     };
 
+    // Preparar dados para o gráfico de categorias
+    const categoryChartData = dashboardData
+        ? Object.entries(dashboardData.summary.categorySummary).map(
+              ([name, value]) => ({
+                  name,
+                  value,
+                  percent: (value / dashboardData.summary.totalExpense) * 100,
+              })
+          )
+        : [];
+
     return (
-        <Layout>
-            <div className="space-y-6">
-                {/* Header */}
-                <div className="flex flex-col gap-6">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-2xl font-semibold text-gray-900">
-                                Financial Overview
-                            </h1>
-                            <p className="mt-1 text-sm text-gray-500">
-                                Monitor your financial performance and insights
-                            </p>
-                        </div>
+        <div className="container mx-auto p-6 space-y-6">
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-2xl font-bold">Dashboard Financeiro</h1>
+                {dashboardData && (
+                    <button
+                        onClick={() => setDashboardData(null)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm"
+                    >
+                        Carregar Novo Arquivo
+                    </button>
+                )}
+            </div>
 
-                        {/* Actions */}
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={handleRefresh}
-                                className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                            >
-                                <RefreshCw className="h-4 w-4" />
-                                Refresh
-                            </button>
+            {!dashboardData ? (
+                <CSVUpload onDataProcessed={handleDataProcessed} />
+            ) : (
+                <>
+                    <SummaryCards
+                        data={{
+                            totalIncome: dashboardData.summary.totalIncome,
+                            totalExpense: dashboardData.summary.totalExpense,
+                            balance: dashboardData.summary.balance,
+                        }}
+                    />
 
-                            <button className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-                                <Upload className="h-4 w-4" />
-                                Upload Data
-                            </button>
-                        </div>
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <FinancialChart data={dashboardData.monthlyData} />
+                        <CategoryChart data={categoryChartData} />
                     </div>
 
-                    {/* Period Selector */}
-                    <PeriodSelector
-                        selected={selectedPeriod}
-                        onChange={setSelectedPeriod}
-                    />
-                </div>
-
-                {/* Main Dashboard Content */}
-                <DashboardGrid isLoading={isLoading} />
-
-                {/* Footer */}
-                <div className="text-center text-sm text-gray-500">
-                    <p>
-                        Last updated: {new Date().toLocaleDateString()}{" "}
-                        {new Date().toLocaleTimeString()}
-                    </p>
-                </div>
-            </div>
-        </Layout>
+                    {/* Botão para mobile que já existe */}
+                    <div className="fixed bottom-4 right-4 md:hidden">
+                        <button
+                            onClick={() => setDashboardData(null)}
+                            className="p-4 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-colors"
+                        >
+                            Carregar Novo Arquivo
+                        </button>
+                    </div>
+                </>
+            )}
+        </div>
     );
 };
 
