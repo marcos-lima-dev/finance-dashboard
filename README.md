@@ -1,87 +1,121 @@
-# Dashboard Financeiro
+# Financial Dashboard
 
-Um dashboard financeiro moderno construído com React, TypeScript e Tailwind CSS.
+Um dashboard financeiro desenvolvido com React e TypeScript para análise e visualização de dados financeiros através de arquivos CSV.
 
-## Funcionalidades
+## 🚀 Funcionalidades
 
--   📊 Métricas financeiras em tempo real
--   📱 Design responsivo
--   📈 Visualização de dados
--   🔄 Importação de dados CSV
--   📋 Gerenciamento de transações
+### Upload e Processamento de CSV
+- Drag and drop de arquivos
+- Preview dos dados antes do processamento
+- Validação automática de dados
+- Suporte para diferentes formatos de delimitadores (vírgula e ponto-vírgula)
+- Feedback visual do processo de upload
 
-## Tecnologias Utilizadas
+### Validações Implementadas
+- Formato de data (DD/MM/YYYY)
+- Tipos de transação (receita/despesa)
+- Valores monetários positivos
+- Categorias predefinidas
+- Campos obrigatórios
 
--   React
--   TypeScript
--   Tailwind CSS
--   Vite
--   Lucide Icons
--   Recharts
+### Interface Responsiva
+- Layout adaptativo
+- Botões flutuantes em mobile
+- Feedback visual em tempo real
+- Barra de progresso animada
 
-## Como Começar
+## 🛠️ Tecnologias
 
-1. Clone o repositório:
+- React 18
+- TypeScript
+- Tailwind CSS
+- Vite
+- Lucide Icons
 
-```bash
-git clone https://github.com/marcos-lima-dev/finance-dashboard.git
-```
-
-2. Instale as dependências:
-
-```bash
-cd finance-dashboard
-npm install
-```
-
-3. Inicie o servidor de desenvolvimento:
-
-```bash
-npm run dev
-```
-
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 src/
 ├── components/
-│   ├── layout/
-│   │   ├── Header.tsx
-│   │   ├── Sidebar.tsx
-│   │   └── Layout.tsx
-│   └── dashboard/
-│       └── DashboardGrid.tsx
-├── pages/
-│   └── Dashboard.tsx
-├── types/
-│   └── index.ts
-└── App.tsx
+│   └── upload/                      # Componentes de upload
+│       ├── CSVUpload.tsx            # Componente principal
+│       ├── FileInstructions.tsx     # Instruções do formato
+│       ├── FilePreview/             # Preview de dados
+│       └── StatusIndicator/         # Indicadores de status
+├── services/                        # Serviços
+│   ├── csvService.ts               # Processamento CSV
+│   └── validationService.ts        # Validações
+└── types/                          # Definições de tipos
+    └── financial.ts                # Tipos financeiros
 ```
 
-## Sprints
+## 📋 Formato do CSV
 
-### Sprint 1 (Concluída)
+O arquivo CSV deve conter as seguintes colunas:
 
--   ✅ Configuração inicial do projeto
--   ✅ Implementação do layout base
--   ✅ Criação dos componentes principais
--   ✅ Dashboard responsivo
+| Coluna     | Formato     | Obrigatório | Descrição                |
+|------------|-------------|-------------|--------------------------|
+| data       | DD/MM/YYYY  | Sim         | Data da transação        |
+| tipo       | texto       | Sim         | receita ou despesa       |
+| valor      | número      | Sim         | Valor positivo           |
+| categoria  | texto       | Sim         | Categoria da transação   |
+| descrição  | texto       | Não         | Descrição opcional       |
 
-### Sprint 2 (Em Desenvolvimento)
+### Categorias Válidas
+- Salário
+- Alimentação
+- Transporte
+- Freelance
+- Lazer
+- Saúde
+- Vendas
+- Aluguel
+- Bônus
 
--   📊 Implementação dos gráficos
--   📁 Upload e processamento de CSV
--   💾 Gerenciamento de dados
--   🔄 Atualização em tempo real
+## 🚀 Como Usar
 
-## Como Contribuir
+1. Clone o repositório:
+\`\`\`bash
+git clone [url-do-repositorio]
+\`\`\`
 
-1. Faça um Fork do projeto
+2. Instale as dependências:
+\`\`\`bash
+npm install
+\`\`\`
+
+3. Rode o projeto:
+\`\`\`bash
+npm run dev
+\`\`\`
+
+## 📊 Sprints
+
+### Sprint 1 ✅
+- Configuração inicial
+- Estrutura básica
+- Componentes UI base
+
+### Sprint 2 ✅
+- Upload e validação de CSV
+- Preview de dados
+- Feedback visual
+- Interface responsiva
+
+### Sprint 3 🚧
+- Visualizações financeiras
+- Gráficos interativos
+- Filtros de dados
+- Dashboard completo
+
+## 📄 Licença
+
+MIT
+
+## 👥 Contribuindo
+
+1. Faça o fork do projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Faça commit das suas alterações (`git commit -m 'Add some AmazingFeature'`)
-4. Faça Push para a Branch (`git push origin feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add: nova feature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
-
-## Licença
-
-Este projeto está sob a licença MIT.
